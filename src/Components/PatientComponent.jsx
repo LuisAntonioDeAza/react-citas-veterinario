@@ -1,8 +1,12 @@
 import React from 'react';
 
-const PatientComponent = ({paciente}) => {
-
+const PatientComponent = ({paciente,setPatient}) => {
     const {name,owner,email,symtom,date} = paciente;
+
+    const editPatient = (patient) =>{
+        setPatient(patient);
+    }
+
     return (
         <>
              <div className='bg-white shadow-md rounded-md px-2 p-5'>
@@ -14,7 +18,9 @@ const PatientComponent = ({paciente}) => {
 
                 <div className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-1'>
 
-                    <div className='bg-green-400 text-white px-2 py-2 text-center rounded-md cursor-pointer hover:bg-green-500 transition '>
+                    <div className='bg-green-400 text-white px-2 py-2 text-center rounded-md cursor-pointer hover:bg-green-500 transition '
+                    onClick={() => editPatient(paciente)}
+                    >
                             <p>Editar</p>
                     </div>
                     <div className='bg-red-400 text-white px-2 py-2 text-center rounded-md p-3 cursor-pointer hover:bg-red-500'>

@@ -7,6 +7,8 @@ function App() {
 const [patients,setPatients] = useState([]);
 const [patient,setPatient] = useState({});
 
+
+
   return (
     <>
     <Header/>
@@ -15,9 +17,12 @@ const [patient,setPatient] = useState({});
     <Form 
     patients={patients}
     setPatients={setPatients}
+    patient={patient}
+    setPatient={setPatient}
     />
     <PatientList
     patients={patients}
+    setPatient={setPatient}
     />
     </div>
 

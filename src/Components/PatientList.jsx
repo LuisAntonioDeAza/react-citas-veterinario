@@ -1,8 +1,8 @@
 import React from 'react';
 import PatientComponent from './PatientComponent';
 
-const PatientList = ({patients}) => {
-    console.log(patients.length)
+const PatientList = ({patients,setPatient}) => {
+    
     return (
         <div className=' bg-red-400  lg:col-span-4 '>
             <h1 className='font-black text-3xl text-center'>Listado de pacienntes</h1>
@@ -18,6 +18,8 @@ const PatientList = ({patients}) => {
                         <PatientComponent 
                         key={paciente.id}
                         paciente={paciente}
+                        setPatient={setPatient}
+                       
                         />
                ))
                }

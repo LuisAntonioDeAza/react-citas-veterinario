@@ -1,8 +1,8 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import Alert from './Alert';
 
-const Form = ({setPatients,patients}) => {
+const Form = ({setPatients,patients,patient,setPatient}) => {
 
     const [name,setName] = useState('');
     const [owner,setOwner] = useState('');
@@ -12,6 +12,19 @@ const Form = ({setPatients,patients}) => {
     const [alert,setAlert] = useState(false);
     const [succes,setSucces] = useState(false);
 
+    useEffect(()=>{
+            if(Object.keys(patient).length > 0){
+
+                setName(patient.name);
+                setOwner(patient.owner);
+                setDate(patient.date);
+                setEmail(patient.email);
+                setSymtom(patient.symtom);
+            }
+    },[patient])
+      
+  
+   
     const generateId = () =>{
         const random = Math.random().toString(36).substr(2);
         const date = Date.now().toString(36);
@@ -22,7 +35,7 @@ const Form = ({setPatients,patients}) => {
 
     const AddPatient = (e) =>{
         e.preventDefault();
-
+ 
         //Validacion del formulario
 
         if([name,owner,email,date,symtom].includes("")){
@@ -31,6 +44,8 @@ const Form = ({setPatients,patients}) => {
             setTimeout(() => {
                 setAlert(false);
             }, 3000);
+
+            return;
         }else{
             setSucces(true);
 
@@ -40,17 +55,35 @@ const Form = ({setPatients,patients}) => {
          
         }
 
+        //Editando
+      
+
         //Agregando los pacientes
         const dataPatients = {
                 name,
                 owner,
                 date,
                 email,
-                symtom,
-                id: generateId()
+                symtom
+                
         }
 
-        setPatients([...patients,dataPatients]);
+        if(patient.id){
+            //editando
+            dataPatients.id = patient.id;
+
+            const patientUpdate = patients.map(patientState => patientState.id === patient.id ? dataPatients : patientState);
+            
+           setPatients(patientUpdate);
+           setPatient({});
+
+           
+
+        }else{
+            dataPatients.id = generateId()
+            setPatients([...patients,dataPatients]);
+        }
+        
       
         //Limpiar los formularios
         setName("");
@@ -61,6 +94,9 @@ const Form = ({setPatients,patients}) => {
 
     }
 
+  
+
+  
     return (
         <div className='bg-blue-300 lg:col-span-2 text-center pb-5  '>
             <div className='float-right'>
@@ -146,10 +182,14 @@ const Form = ({setPatients,patients}) => {
                   txt={"Paciente agregado con exito"}/> :null}
 
                 <button
-                className='bg-blue-500 w-full rounded-md text-white font-bold p-3 hover:bg-blue-600 mt-1'
+                className={`w-full rounded-md text-white font-bold p-3 mt-1 
+                ${(patient.id ?'bg-green-500 hover:bg-green-600 ' 
+                :
+                "bg-blue-500  hover:bg-blue-600")}`}
                 
                 >
-                    Agregar paciente
+                    {patient.id ? "Editar paciente" : "Agregar paciente"}
+                    
                 </button>
             </form>
             </div>
